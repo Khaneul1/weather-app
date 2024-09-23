@@ -3,6 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WeatherBox from './component/WeatherBox';
 import WeatherButton from './component/WeatherButton';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 // 1. 앱이 실행되자마자 현재 위치 기반의 날씨가 보인다
 // 2. 도시, 섭씨, 화씨, 날씨 상태 정보가 보인다
@@ -14,6 +15,7 @@ function App() {
   const [weather, setWeather] = useState(null);
   const cities = ['jeju', 'tokyo', 'seoul'];
   const [city, setCity] = useState('');
+  const [loading, setLoading] = useState(false);
   //앱이 실행되자마자 날씨 보임
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -24,16 +26,20 @@ function App() {
   };
   const getWeatherByCurrentLocation = async (lat, lon) => {
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2d1bdbf7fa356db5d77ab48eeccda292&units=metric`;
+    setLoading(true);
     let response = await fetch(url);
     let data = await response.json();
     setWeather(data);
+    setLoading(false);
   };
 
   const getWeatherByCity = async () => {
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2d1bdbf7fa356db5d77ab48eeccda292&units=metric`;
+    setLoading(true);
     let response = await fetch(url);
     let data = await response.json();
     setWeather(data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -44,12 +50,31 @@ function App() {
     }
   }, [city]);
 
+  const handleCityChange = (city) => {
+    if (city === 'current') {
+      setCity(null);
+    } else {
+      setCity(city);
+    }
+  };
+
   return (
     <div>
-      <div className="container">
-        <WeatherBox weather={weather} />
-        <WeatherButton cities={cities} setCity={setCity} />
-      </div>
+      {loading ? (
+        <div className="container">
+          <ClipLoader color="f88c6b" loading={loading} size={150} />
+        </div>
+      ) : (
+        <div className="container">
+          <WeatherBox weather={weather} />
+          <WeatherButton cities={cities} setCity={setCity} />
+        </div>
+      )}
+      <WeatherButton
+        cities={cities}
+        handleCityChange={handleCityChange}
+        selectedCity={city}
+      />
     </div>
   );
 }
