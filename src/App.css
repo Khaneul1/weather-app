@@ -1,5 +1,5 @@
 body {
-  background: url(https://t4.ftcdn.net/jpg/04/61/23/23/360_F_461232389_XCYvca9n9P437nm3FrCsEIapG4SrhufP.jpg);
+  background: url(https://images.unsplash.com/photo-1545193544-312983719627?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE4MjY3M30);
   height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;
@@ -14,8 +14,28 @@ body {
 }
 
 .weather-box {
-  border: 3px solid white;
+  border: 3rem solid white;
   padding: 50px;
   border-radius: 30px;
-  background-color: azure;
+  background-color: white;
+}
+
+.weatherBtn {
+  margin: 2rem;
+}
+
+.weatherBtn:hover {
+}
+.weather-text {
+  font-size: 2rem;
+}
+
+.city-button,
+.current-button {
+  margin: 0 0.4rem;
+}
+
+.city-button,
+.current-button:hover {
+  background-color: #3c3c3c;
 }

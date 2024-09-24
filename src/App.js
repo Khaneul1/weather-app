@@ -13,10 +13,11 @@ import ClipLoader from 'react-spinners/ClipLoader';
 // 6. 데이터를 들고 오는 동안 로딩 스피너가 돈다
 function App() {
   const [weather, setWeather] = useState(null);
-  const cities = ['jeju', 'tokyo', 'seoul'];
+  const cities = ['Jeju', 'Tokyo', 'Seoul'];
   const [city, setCity] = useState('');
   const [loading, setLoading] = useState(false);
-  //앱이 실행되자마자 날씨 보임
+
+  //현재 위치의 날씨를 가져오는 함수
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude;
@@ -24,6 +25,8 @@ function App() {
       getWeatherByCurrentLocation(lat, lon);
     });
   };
+
+  //현재 위치 날씨 api 호출
   const getWeatherByCurrentLocation = async (lat, lon) => {
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2d1bdbf7fa356db5d77ab48eeccda292&units=metric`;
     setLoading(true);
@@ -33,6 +36,7 @@ function App() {
     setLoading(false);
   };
 
+  //도시 기반 날씨 api 호출
   const getWeatherByCity = async () => {
     let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=2d1bdbf7fa356db5d77ab48eeccda292&units=metric`;
     setLoading(true);
@@ -43,7 +47,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (city == '') {
+    if (city === '') {
       getCurrentLocation();
     } else {
       getWeatherByCity();
@@ -52,7 +56,7 @@ function App() {
 
   const handleCityChange = (city) => {
     if (city === 'current') {
-      setCity(null);
+      setCity('');
     } else {
       setCity(city);
     }
@@ -67,7 +71,11 @@ function App() {
       ) : (
         <div className="container">
           <WeatherBox weather={weather} />
-          <WeatherButton cities={cities} setCity={setCity} />
+          <WeatherButton
+            cities={cities}
+            handleCityChange={handleCityChange}
+            selectedCity={city}
+          />
         </div>
       )}
       <WeatherButton

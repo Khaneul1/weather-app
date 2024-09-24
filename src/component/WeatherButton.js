@@ -5,9 +5,11 @@ const weatherButton = ({ cities, selectedCity, handleCityChange }) => {
   console.log('cities?', cities);
 
   return (
-    <div>
+    <div className="weatherBtn">
+      {/* 현재 위치 버튼 */}
       <Button
-        variant={`${selectedCity == null ? 'outline-warning' : 'warning'}`}
+        className="current-button"
+        variant={`${selectedCity == null ? 'outline-secondary' : 'secondary'}`}
         onClick={() => handleCityChange('current')}
       >
         Current Location
@@ -15,10 +17,13 @@ const weatherButton = ({ cities, selectedCity, handleCityChange }) => {
 
       {cities.map((item, index) => (
         <Button
-          variant={`${selectedCity == city ? 'outline-warning' : 'warning'}`}
-          onClick={() => handleCityChange(city)}
+          className="city-button"
+          variant={`${
+            selectedCity === item ? 'outline-secondary' : 'secondary'
+          }`}
+          onClick={() => handleCityChange(item)}
         >
-          {city}
+          {item}
         </Button>
       ))}
     </div>
